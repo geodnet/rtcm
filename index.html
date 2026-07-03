@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GEODNET Raw RTCM Data Service Developer Portal</title>
+  <meta name="description" content="Technical developer reference documentation and knowledge base for the GEODNET Raw RTCM Data wholesale positioning infrastructure service.">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Floating Glow Blobs -->
+  <div class="bg-glow-container">
+    <div class="bg-glow-blob blob1"></div>
+    <div class="bg-glow-blob blob2"></div>
+    <div class="bg-glow-blob blob3"></div>
+  </div>
+
+  <!-- Mobile Menu Toggle Button -->
+  <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Navigation Menu">
+    <i class="fa-solid fa-bars"></i>
+  </button>
+
+  <div class="layout-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <a href="#home" class="sidebar-logo">
+        <div class="logo-wrapper">
+          <!-- GEODNET SVG Logo -->
+          <svg viewBox="0 0 100 100" class="logo-svg">
+            <circle cx="50" cy="50" r="46" fill="#dc2626" />
+            <path d="M 18,82 L 82,18" stroke="white" stroke-width="12" stroke-linecap="round" />
+            <circle cx="50" cy="50" r="34" fill="#dc2626" />
+            <circle cx="50" cy="50" r="28" fill="none" stroke="white" stroke-width="2.5" />
+            <path d="M 36,36 Q 44,30 52,34 T 62,40 T 48,50 Z" fill="white" />
+            <path d="M 54,52 Q 62,56 58,66 T 46,62 T 48,54 Z" fill="white" />
+            <path d="M 30,50 Q 28,54 34,58 T 40,52 Z" fill="white" />
+          </svg>
+        </div>
+        <span class="logo-text">GEODNET</span>
+      </a>
+      
+      <ul class="sidebar-menu">
+        <li class="menu-item active">
+          <a href="#home">
+            <i class="fa-solid fa-house"></i>
+            <span>Overview</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="#ntrip">
+            <i class="fa-solid fa-tower-broadcast"></i>
+            <span>NTRIP Access</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="#api">
+            <i class="fa-solid fa-code"></i>
+            <span>Station API</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="#console">
+            <i class="fa-solid fa-window-restore"></i>
+            <span>Enterprise Platform</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="#kb">
+            <i class="fa-solid fa-book-open"></i>
+            <span>Knowledge Base</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="#qc">
+            <i class="fa-solid fa-chart-line"></i>
+            <span>Quality Control</span>
+          </a>
+        </li>
+        <li class="menu-item" style="margin-top: 1rem; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 1rem;">
+          <a href="#contact">
+            <i class="fa-solid fa-paper-plane"></i>
+            <span>Get Started / Contact</span>
+          </a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- Section 1: Overview -->
+      <section id="home" class="section active">
+        <h1 class="page-title">Raw RTCM Data Service</h1>
+        <p class="page-subtitle">Wholesale GNSS reference station data streams to build your custom RTK/PPP positioning engines.</p>
+        
+        <div class="card">
+          <h2 class="section-title">
+            <i class="fa-solid fa-network-wired" style="color: var(--accent-cyan);"></i>
+            Decentralized GNSS Infrastructure
+          </h2>
+          <p>
+            The **Global Earth Observation Decentralized Network (GEODNET)** is the world's largest blockchain-based GNSS reference station network. By deploying triple-frequency, multi-constellation base stations globally, GEODNET collects high-fidelity space weather and satellite observations in real-time.
+          </p>
+          <p style="margin-top: 1rem;">
+            The **Raw RTCM Data Service** is a wholesale data stream service designed for service providers, OEMs, and researchers. Instead of simple point corrections, this service provides direct, continuous 1 Hz raw observation streams (RTCM 3.2 MSM4 format) from a customized pool of stations, enabling you to build independent **Network RTK (VRS)**, **Precise Point Positioning (PPP)**, and **Precise Orbit Determination (POD)** engines.
+          </p>
+          
+          <div class="hero-stats">
+            <div class="stat-item">
+              <div class="stat-value">> 20,000</div>
+              <div class="stat-label">Active Stations</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value">1 Hz</div>
+              <div class="stat-label">Data Rate</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value">1 - 2 cm</div>
+              <div class="stat-label">Achievable Precision</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" style="font-size: 1.8rem; line-height: 2.25rem;">Multi-GNSS</div>
+              <div class="stat-label">Multiple Bands</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="section-title">
+            <i class="fa-solid fa-globe" style="color: var(--accent-blue);"></i>
+            Global Reference Network Status
+          </h2>
+          <p style="margin-bottom: 1rem;">
+            Click on any station dot in the live interactive network mesh simulation below to view local mountpoint IDs, coordinates, and real-time operational status (Active, Online, or Offline).
+          </p>
+          
+          <!-- Canvas Container -->
+          <div class="network-map-container" id="network-map-canvas-container">
+            <div class="map-glow-blob"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: NTRIP Access -->
+      <section id="ntrip" class="section">
+        <h1 class="page-title">NTRIP Caster Access</h1>
+        <p class="page-subtitle">Configure your positioning engines and devices to stream RTCM corrections.</p>
+        
+        <div class="ntrip-grid">
+          
+          <!-- Connection Settings Card -->
+          <div class="card">
+            <h2 class="section-title">
+              <i class="fa-solid fa-server" style="color: var(--accent-cyan);"></i>
+              Connection Parameters
+            </h2>
+            <p>Use the following parameters to authenticate and establish a stream connection with the GEODNET raw data caster:</p>
+            
+            <table class="connection-table">
+              <tr>
+                <td class="label">Host</td>
+                <td class="value">rtcm.geodnet.com</td>
+              </tr>
+              <tr>
+                <td class="label">Port</td>
+                <td class="value">2201</td>
+              </tr>
+              <tr>
+                <td class="label">Protocol</td>
+                <td class="value">NTRIP v1.0</td>
+              </tr>
+              <tr>
+                <td class="label">Format</td>
+                <td class="value">RTCM v3.2 (MSM4)</td>
+              </tr>
+              <tr>
+                <td class="label">Username</td>
+                <td class="value"><span class="badge badge-info">Provided by Email</span></td>
+              </tr>
+              <tr>
+                <td class="label">Password</td>
+                <td class="value"><span class="badge badge-info">Provided by Email</span></td>
+              </tr>
+            </table>
+
+            <div class="alert-box" style="margin-top: 1.5rem;">
+              <i class="fa-solid fa-circle-info alert-icon"></i>
+              <div class="alert-message">
+                <strong>Connection Limits:</strong> Ensure that the total number of concurrent active TCP connections does not exceed your authorized allocation limit, otherwise earlier streams will be kicked off.
+              </div>
+            </div>
+          </div>
+
+          <!-- Broadcast Message Types Card -->
+          <div class="card">
+            <h2 class="section-title">
+              <i class="fa-solid fa-envelope-open-text" style="color: var(--accent-blue);"></i>
+              Broadcasted Messages
+            </h2>
+            <p>GEODNET streams utilize RTCM 3.2 MSM4 (Multiple Signal Message) formats broadcasted at 1 Hz intervals containing the following message IDs:</p>
+            
+            <table class="qc-table" style="margin-top: 1rem;">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Constellation</th>
+                  <th>Payload Signals</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>1005</code></td>
+                  <td>Coordinate Reference</td>
+                  <td>Approximate antenna coordinates (ARP) in ECEF XYZ</td>
+                </tr>
+                <tr>
+                  <td><code>1033</code></td>
+                  <td>Hardware Metadata</td>
+                  <td>Receiver description, firmware version, and antenna model serials</td>
+                </tr>
+                <tr>
+                  <td><code>1074</code></td>
+                  <td>MSM4 GPS</td>
+                  <td><code>2(1C)</code>, <code>10(2W)</code>, <code>17(2X)</code>, <code>23(5Q)</code></td>
+                </tr>
+                <tr>
+                  <td><code>1084</code></td>
+                  <td>MSM4 GLO</td>
+                  <td><code>2(1C)</code>, <code>8(2C)</code></td>
+                </tr>
+                <tr>
+                  <td><code>1094</code></td>
+                  <td>MSM4 GAL</td>
+                  <td><code>2(1C)</code>, <code>8(6C)</code>, <code>15(7Q)</code>, <code>23(5Q)</code></td>
+                </tr>
+                <tr>
+                  <td><code>1114</code></td>
+                  <td>MSM4 QZSS</td>
+                  <td><code>2(1C)</code>, <code>17(2X)</code>, <code>23(5Q)</code></td>
+                </tr>
+                <tr>
+                  <td><code>1124</code></td>
+                  <td>MSM4 BDS</td>
+                  <td><code>2(2I)</code>, <code>8(6I)</code>, <code>14(7I)</code>, <code>23(5P)</code>, <code>25(7D)</code>, <code>31(1P)</code></td>
+                </tr>
+                <tr>
+                  <td><code>1134</code></td>
+                  <td>MSM4 IRNSS</td>
+                  <td><code>22(5A)</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="section-title">
+            <i class="fa-solid fa-triangle-exclamation" style="color: var(--warning);"></i>
+            Offline Stream Behavior
+          </h2>
+          <p>
+            Once a connection is established for a specific base station mountpoint, the GEODNET server keeps the TCP socket connection active. In the event that a base station goes offline physically, the server will transmit a text message **"Mountpoint offline"** inside the payload. 
+          </p>
+          <p style="margin-top: 0.5rem;">
+            When the base station recovers internet connectivity and starts logging data again, the observation data stream will resume automatically on the same connection.
+          </p>
+        </div>
+      </section>
+
+      <!-- Section 3: Station API Reference -->
+      <section id="api" class="section">
+        <h1 class="page-title">GEODNET Station API</h1>
+        <p class="page-subtitle">Manage base station mountpoints, coordinates, and query real-time quality control observation data.</p>
+        
+        <div class="card">
+          <div class="alert-box">
+            <i class="fa-solid fa-lock alert-icon"></i>
+            <div class="alert-message">
+              <strong>Authentication:</strong> All requests to the Raw Data API require HTTP Basic Authentication. Prepend your base64 encoded username/password credentials in the <code>Authorization: Basic &lt;Base64&gt;</code> request headers. Contact <strong>support@geodnet.com</strong> to apply for raw data client account credentials.
+            </div>
+          </div>
+
+          <div class="api-layout">
+            
+            <!-- Left Sub navigation -->
+            <nav class="api-nav">
+              <button class="api-nav-btn active" data-endpoint="mountpoints">
+                <span class="method method-get">GET</span>
+                <span>/mountpoints</span>
+              </button>
+              <button class="api-nav-btn" data-endpoint="add">
+                <span class="method method-post">POST</span>
+                <span>/add</span>
+              </button>
+              <button class="api-nav-btn" data-endpoint="replace">
+                <span class="method method-post">POST</span>
+                <span>/replacement</span>
+              </button>
+              <button class="api-nav-btn" data-endpoint="coordinates">
+                <span class="method method-get">GET</span>
+                <span>/coordinates</span>
+              </button>
+              <button class="api-nav-btn" data-endpoint="stations">
+                <span class="method method-get">GET</span>
+                <span>/stations</span>
+              </button>
+              <button class="api-nav-btn" data-endpoint="info">
+                <span class="method method-post">POST</span>
+                <span>/station</span>
+              </button>
+              <button class="api-nav-btn" data-endpoint="qcHourly">
+                <span class="method method-post">POST</span>
+                <span>/qc/hourly</span>
+              </button>
+              <button class="api-nav-btn" data-endpoint="qcStation">
+                <span class="method method-post">POST</span>
+                <span>/qc/station</span>
+              </button>
+            </nav>
+
+            <!-- Right endpoint contents -->
+            <div class="api-content">
+              <h2 id="api-explorer-title" style="margin-bottom: 0.5rem;">Get Mountpoints List</h2>
+              <p id="api-explorer-desc" style="color: var(--text-secondary); margin-bottom: 1.5rem;">Retrieves the list of all available RTCM mountpoints matching the customer authorizations.</p>
+              
+              <div class="api-endpoint-url">
+                <span id="api-method-badge" class="method method-get">GET</span>
+                <span id="api-endpoint-url-text">https://rawdata.geodnet.com/api/rawdata/v1/mountpoints</span>
+              </div>
+
+              <!-- Interactive Playground -->
+              <h3 style="margin-bottom: 0.75rem; font-size: 1.1rem; color: white;">Parameters</h3>
+              <div style="overflow-x: auto;">
+                <table class="param-table">
+                  <thead>
+                    <tr>
+                      <th>Parameter</th>
+                      <th>Type</th>
+                      <th>Value</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody id="param-list-body">
+                    <!-- Parameters dynamically filled -->
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="api-sandbox-grid">
+                <div>
+                  <button class="btn" id="api-send-btn">
+                    <i class="fa-solid fa-play"></i>
+                    <span>Run Request</span>
+                  </button>
+                </div>
+                
+                <div>
+                  <div class="console-box">
+                    <div class="console-header">
+                      <span class="console-title">RESPONSE TERMINAL</span>
+                      <div class="console-actions">
+                        <span class="console-dot red"></span>
+                        <span class="console-dot yellow"></span>
+                        <span class="console-dot green"></span>
+                      </div>
+                    </div>
+                    <pre class="console-content" id="console-output-content">// Click "Run Request" to execute API call</pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4: Enterprise Console Platform -->
+      <section id="console" class="section">
+        <h1 class="page-title">Enterprise Console Platform</h1>
+        <p class="page-subtitle">Configure, search, and manage your wholesale reference station pool via the web console.</p>
+        
+        <!-- Platform info header card -->
+        <div class="card">
+          <div class="console-platform-intro">
+            <div>
+              <h2 class="section-title" style="border: none; padding-bottom: 0;">
+                <i class="fa-solid fa-shield-halved" style="color: var(--accent-cyan);"></i>
+                Access & Management Portal
+              </h2>
+              <p style="margin-top: 1rem;">
+                Customers are provided a dedicated secure portal access at: 
+                <a href="https://rawdata.geodnet.com/console/login" target="_blank" rel="noopener" class="styled-link">https://rawdata.geodnet.com/console/login</a>. 
+                Using the console dashboard, you can track station counts, query mountpoint positions, upload batch station additions, and download CSV station configurations.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Simulated Interactive Dashboard -->
+        <div class="card" style="padding: 1.5rem;">
+          <div class="simulated-browser-bar">
+            <div class="browser-controls">
+              <span class="console-dot red"></span>
+              <span class="console-dot yellow"></span>
+              <span class="console-dot green"></span>
+            </div>
+            <div class="browser-address">https://rawdata.geodnet.com/console/dashboard</div>
+          </div>
+
+          <div class="simulated-portal-content">
+            <!-- Top bar -->
+            <div class="portal-topbar">
+              <div class="portal-title-wrapper">
+                <i class="fa-solid fa-network-wired" style="color: var(--accent-cyan);"></i>
+                <span>Raw Data Service Console</span>
+              </div>
+              <div class="portal-user-info">
+                <span>Welcome, <strong>test10</strong></span>
+                <i class="fa-regular fa-circle-user"></i>
+              </div>
+            </div>
+
+            <!-- Stats grids -->
+            <div class="portal-dashboard-grid">
+              <div class="portal-stat-card">
+                <div class="portal-stat-icon red-glow"><i class="fa-solid fa-lock"></i></div>
+                <div class="portal-stat-details">
+                  <div class="portal-stat-num" id="console-total-limit">3,000</div>
+                  <div class="portal-stat-title">Total Allowed Stations</div>
+                </div>
+              </div>
+              <div class="portal-stat-card">
+                <div class="portal-stat-icon yellow-glow"><i class="fa-solid fa-lock-open"></i></div>
+                <div class="portal-stat-details">
+                  <div class="portal-stat-num" id="console-auth-count">2,223</div>
+                  <div class="portal-stat-title">Authorized Stations</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Main Work Area -->
+            <div class="portal-workarea">
+              <div class="portal-tabs">
+                <button class="portal-tab-btn active" id="btn-tab-auth">Authorized List</button>
+                <button class="portal-tab-btn" id="btn-tab-mounts">Available Mountpoint List</button>
+              </div>
+
+              <!-- Content panel: Authorized List -->
+              <div class="portal-panel active" id="panel-auth-list">
+                <div class="portal-panel-actions">
+                  <div class="search-box-wrapper">
+                    <i class="fa-solid fa-magnifying-glass search-box-icon"></i>
+                    <input type="text" class="portal-search" id="console-auth-search" placeholder="Search authorized stations...">
+                  </div>
+                  <div class="action-buttons-group">
+                    <button class="btn btn-small" id="console-btn-create"><i class="fa-solid fa-plus"></i> Add Station</button>
+                    <button class="btn btn-secondary btn-small" id="console-btn-download"><i class="fa-solid fa-download"></i> Download CSV</button>
+                    <button class="btn btn-secondary btn-small" id="console-btn-upload"><i class="fa-solid fa-upload"></i> Upload CSV</button>
+                  </div>
+                </div>
+
+                <div class="portal-table-wrapper">
+                  <table class="portal-table">
+                    <thead>
+                      <tr>
+                        <th>Mountpoint</th>
+                        <th>Region</th>
+                        <th>Latitude</th>
+                        <th>Longitude</th>
+                        <th>Added Time</th>
+                        <th style="text-align: center;">Operations</th>
+                      </tr>
+                    </thead>
+                    <tbody id="console-auth-table-body">
+                      <!-- Filled dynamically by script.js -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Content panel: Available Mountpoint List -->
+              <div class="portal-panel" id="panel-mounts-list">
+                <div class="portal-panel-actions">
+                  <div class="search-box-wrapper">
+                    <i class="fa-solid fa-magnifying-glass search-box-icon"></i>
+                    <input type="text" class="portal-search" id="console-mounts-search" placeholder="Search available mountpoints...">
+                  </div>
+                  <button class="btn btn-secondary btn-small" id="console-mounts-btn-download"><i class="fa-solid fa-download"></i> Download Full List</button>
+                </div>
+
+                <div class="portal-table-wrapper">
+                  <table class="portal-table">
+                    <thead>
+                      <tr>
+                        <th>Mountpoint</th>
+                        <th>Region</th>
+                        <th>Latitude</th>
+                        <th>Longitude</th>
+                      </tr>
+                    </thead>
+                    <tbody id="console-mounts-table-body">
+                      <!-- Filled dynamically by script.js -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Simulated Edit/Replace modal inside the console -->
+        <div class="simulated-modal" id="console-edit-modal">
+          <div class="simulated-modal-content">
+            <div class="simulated-modal-header">
+              <h3>Edit Mountpoint Connection</h3>
+              <button class="close-sim-modal" id="console-close-modal">&times;</button>
+            </div>
+            <div class="simulated-modal-body">
+              <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.25rem;">
+                Authorized base stations cannot be deleted to protect integrity, but you can swap out an underperforming station for an active one.
+              </p>
+              
+              <div class="form-group-row">
+                <label>Original Mountpoint</label>
+                <input type="text" id="console-edit-original" class="param-input" readonly style="background: rgba(255,255,255,0.05); color: var(--text-secondary);">
+              </div>
+              
+              <div class="form-group-row" style="margin-top: 1rem;">
+                <label>Target Replacement Mountpoint</label>
+                <select id="console-edit-target" class="param-input" style="background: var(--bg-primary); cursor: pointer;">
+                  <!-- Filled dynamically -->
+                </select>
+              </div>
+
+              <div class="simulated-modal-footer" style="margin-top: 1.5rem; display: flex; justify-content: flex-end; gap: 0.75rem;">
+                <button class="btn btn-secondary btn-small" id="console-edit-cancel">Cancel</button>
+                <button class="btn btn-small" id="console-edit-submit">Replace Station</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Simulated Add Station modal -->
+        <div class="simulated-modal" id="console-add-modal">
+          <div class="simulated-modal-content">
+            <div class="simulated-modal-header">
+              <h3>Add New Station</h3>
+              <button class="close-sim-modal" id="console-add-close-modal">&times;</button>
+            </div>
+            <div class="simulated-modal-body">
+              <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.25rem;">
+                Add a new station mountpoint to your authorized active station list.
+              </p>
+              
+              <div class="form-group-row">
+                <label>Select Mountpoint</label>
+                <select id="console-add-target" class="param-input" style="background: var(--bg-primary); cursor: pointer;">
+                  <!-- Filled dynamically -->
+                </select>
+              </div>
+
+              <div class="simulated-modal-footer" style="margin-top: 1.5rem; display: flex; justify-content: flex-end; gap: 0.75rem;">
+                <button class="btn btn-secondary btn-small" id="console-add-cancel">Cancel</button>
+                <button class="btn btn-small" id="console-add-submit">Add Station</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 5: Knowledge Base -->
+      <section id="kb" class="section">
+        <h1 class="page-title">Developer Knowledge Base</h1>
+        <p class="page-subtitle">Detailed documentation on satellite positioning, signal processing, and orbit determination theory.</p>
+        
+        <!-- Live KB Search Box -->
+        <div class="kb-search-container">
+          <i class="fa-solid fa-magnifying-glass kb-search-icon"></i>
+          <input type="text" class="kb-search-input" id="kb-search" placeholder="Search Knowledge Base topics (e.g. VRS, Precise Orbit, Ionosphere delay...)">
+        </div>
+
+        <div class="kb-grid">
+          
+          <!-- Card: GNSS -->
+          <div class="kb-card" data-topic="gnss">
+            <span class="kb-card-tag">Constellations</span>
+            <h3 class="kb-card-title">GNSS Principles</h3>
+            <p class="kb-card-excerpt">Overview of GPS, GLONASS, Galileo, BeiDou, and the physics of carrier-phase multi-frequency observations.</p>
+          </div>
+
+          <!-- Card: RTK -->
+          <div class="kb-card" data-topic="rtk">
+            <span class="kb-card-tag">Positioning</span>
+            <h3 class="kb-card-title">Real-Time Kinematic (RTK)</h3>
+            <p class="kb-card-excerpt">Mathematical theory of carrier phase double-differencing and integer ambiguity resolution.</p>
+          </div>
+
+          <!-- Card: VRS -->
+          <div class="kb-card" data-topic="vrs">
+            <span class="kb-card-tag">Networks</span>
+            <h3 class="kb-card-title">Virtual Reference Station</h3>
+            <p class="kb-card-excerpt">Extending baseline lengths up to regional grids by computing and streaming localized virtual base corrections.</p>
+          </div>
+
+          <!-- Card: PPP -->
+          <div class="kb-card" data-topic="ppp">
+            <span class="kb-card-tag">Positioning</span>
+            <h3 class="kb-card-title">Precise Point Positioning</h3>
+            <p class="kb-card-excerpt">Decentralized absolute global coordinate calculations using precise orbit and clock products, and NRCAN service.</p>
+          </div>
+
+          <!-- Card: RTCM -->
+          <div class="kb-card" data-topic="rtcm">
+            <span class="kb-card-tag">Protocols</span>
+            <h3 class="kb-card-title">RTCM MSM Message Structures</h3>
+            <p class="kb-card-excerpt">Deciphering RTCM 3.2 Multiple Signal Messages (MSM4) and essential packet ID payload parameters.</p>
+          </div>
+
+          <!-- Card: POD -->
+          <div class="kb-card" data-topic="pod">
+            <span class="kb-card-tag">Orbits</span>
+            <h3 class="kb-card-title">GNSS POD (Precise Orbit Determination)</h3>
+            <p class="kb-card-excerpt">Solving satellite trajectory perturbations, solar radiation pressure, and geopotential spherical harmonics.</p>
+          </div>
+
+          <!-- Card: Ionospheric -->
+          <div class="kb-card" data-topic="iono">
+            <span class="kb-card-tag">Atmosphere</span>
+            <h3 class="kb-card-title">Ionospheric Modeling</h3>
+            <p class="kb-card-excerpt">Analyzing charged upper-atmospheric delay errors, total electron content (TEC), and dual-frequency cancellations.</p>
+          </div>
+
+          <!-- Card: Tropospheric -->
+          <div class="kb-card" data-topic="tropo">
+            <span class="kb-card-tag">Atmosphere</span>
+            <h3 class="kb-card-title">Tropospheric Modeling</h3>
+            <p class="kb-card-excerpt">Hydrostatic vs. wet delays modeling, slant mapping functions (VMF3), and troposphere parameter estimates.</p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Section 6: Quality Control Guide -->
+      <section id="qc" class="section">
+        <h1 class="page-title">Quality Control & Base Station Management</h1>
+        <p class="page-subtitle">Understand quality control metrics, installation verification, and operational state variables.</p>
+        
+        <div class="qc-grid">
+          
+          <!-- Station Status Definitions Card -->
+          <div class="card">
+            <h2 class="section-title">
+              <i class="fa-solid fa-heartbeat" style="color: var(--accent-cyan);"></i>
+              Base Station States
+            </h2>
+            <p style="margin-bottom: 1.25rem;">
+              Not all physical stations are active in the correction service caster. GEODNET algorithms filter signals based on continuous quality control checks. Station statuses include:
+            </p>
+            
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+              <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                <span class="badge badge-success" style="margin-top: 0.2rem; min-width: 80px; text-align: center;">Active</span>
+                <div>
+                  <strong style="color: white; display: block; margin-bottom: 0.15rem;">Active</strong>
+                  <span style="color: var(--text-secondary); font-size: 0.9rem;">Station has passed all installation check metrics, is streaming live data, and is fully integrated into the RTK/VRS/PPP service caster.</span>
+                </div>
+              </div>
+              
+              <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                <span class="badge badge-warning" style="margin-top: 0.2rem; min-width: 80px; text-align: center;">Online</span>
+                <div>
+                  <strong style="color: white; display: block; margin-bottom: 0.15rem;">Online</strong>
+                  <span style="color: var(--text-secondary); font-size: 0.9rem;">Station is transmitting observation data packets to the cloud platform, but is currently excluded from active RTK calculation (have not passed the QC validation).</span>
+                </div>
+              </div>
+              
+              <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                <span class="badge badge-info" style="margin-top: 0.2rem; min-width: 80px; text-align: center; background: #374151; color: #d1d5db; border-color: rgba(255,255,255,0.1);">Offline</span>
+                <div>
+                  <strong style="color: white; display: block; margin-bottom: 0.15rem;">Offline</strong>
+                  <span style="color: var(--text-secondary); font-size: 0.9rem;">Station has lost internet connectivity, or has power issues, and is currently not streaming any observation data to the backend.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- QC Metrics Meanings Card -->
+          <div class="card">
+            <h2 class="section-title">
+              <i class="fa-solid fa-list-check" style="color: var(--accent-blue);"></i>
+              GNSS QC Database Fields
+            </h2>
+            <p>
+              GEODNET runs hourly quality checks on RTCM logs using TEQC and RTKLIB software. The resulting database contains the following metrics to evaluate station health:
+            </p>
+            
+            <table class="qc-table" style="margin-top: 1rem;">
+              <thead>
+                <tr>
+                  <th>Field</th>
+                  <th>Full Name</th>
+                  <th>Ideal Metric Target</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>Availability</code></td>
+                  <td>Data Availability (%)</td>
+                  <td>&gt; 99.9%</td>
+                </tr>
+                <tr>
+                  <td><code>MP12</code></td>
+                  <td>Multipath on L1/L2 (m)</td>
+                  <td>&lt; 0.5 m (Lower is better)</td>
+                </tr>
+                <tr>
+                  <td><code>MP21</code></td>
+                  <td>Multipath on L2/L1 (m)</td>
+                  <td>&lt; 0.5 m (Lower is better)</td>
+                </tr>
+                <tr>
+                  <td><code>IOD slips</code></td>
+                  <td>Ionospheric Delay Slips</td>
+                  <td>Lower values indicate high signal stability</td>
+                </tr>
+                <tr>
+                  <td><code>o/slps</code></td>
+                  <td>Epochs per Cycle Slip</td>
+                  <td>Higher values indicate less atmospheric noise</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="section-title">
+            <i class="fa-solid fa-circle-check" style="color: var(--success);"></i>
+            Base Station Installation Quality Control Checks
+          </h2>
+          <p>
+            To qualify for the **ACTIVE** state in the wholesale reference stream caster, base stations must maintain the following operational parameters:
+          </p>
+          <ul style="list-style: none; margin-top: 1rem; display: flex; flex-direction: column; gap: 0.75rem;">
+            <li style="display: flex; gap: 0.75rem; color: var(--text-secondary);">
+              <i class="fa-solid fa-chevron-right" style="color: var(--accent-cyan); margin-top: 0.25rem;"></i>
+              <span><strong>Sky Visibility:</strong> Antenna must be mounted with clear 360° open-sky visibility to track low elevation satellites. Tracking less than 30 satellites simultaneously is flagged.</span>
+            </li>
+            <li style="display: flex; gap: 0.75rem; color: var(--text-secondary);">
+              <i class="fa-solid fa-chevron-right" style="color: var(--accent-cyan); margin-top: 0.25rem;"></i>
+              <span><strong>SNR Checks:</strong> The average Carrier-to-Noise density ratio (C/N0 or SNR) of tracked satellites must be above 32 dB-Hz. Satellite signals below 32 dB-Hz are filtered out.</span>
+            </li>
+            <li style="display: flex; gap: 0.75rem; color: var(--text-secondary);">
+              <i class="fa-solid fa-chevron-right" style="color: var(--accent-cyan); margin-top: 0.25rem;"></i>
+              <span><strong>Mechanical Stability:</strong> The physical structure must resist movement. Continuous PPP monitoring (NRCAN) detects if a station shifts. Movement of more than 5mm in horizontal coordinates will trigger automatic suspension from ACTIVE status.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Section 7: Contact Us / Customer Form -->
+      <section id="contact" class="section">
+        <h1 class="page-title">Enterprise Onboarding & Contact Us</h1>
+        <p class="page-subtitle">Submit your request to configure a customized wholesale RTCM observation data stream.</p>
+        
+        <div class="card">
+          <h2 class="section-title">
+            <i class="fa-solid fa-paper-plane" style="color: var(--accent-cyan);"></i>
+            Data Stream Request Form
+          </h2>
+          <p style="margin-bottom: 1.5rem; color: var(--text-secondary);">
+            Tell us about your positioning requirements. Once submitted, our engineering and sales support team will reach out with caster login credentials and station allocation quotas.
+          </p>
+
+          <form id="onboarding-form" class="contact-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="contact-name">Full Name<span class="required">*</span></label>
+                <input type="text" id="contact-name" class="form-control" required placeholder="John Doe">
+              </div>
+              <div class="form-group">
+                <label for="contact-email">Email Address<span class="required">*</span></label>
+                <input type="email" id="contact-email" class="form-control" required placeholder="john.doe@company.com">
+              </div>
+            </div>
+
+            <div class="form-row" style="margin-top: 1rem;">
+              <div class="form-group">
+                <label for="contact-company">Company Name<span class="required">*</span></label>
+                <input type="text" id="contact-company" class="form-control" required placeholder="GeoPositioning Systems Ltd.">
+              </div>
+              <div class="form-group">
+                <label for="contact-stations">Requested Station Count<span class="required">*</span></label>
+                <input type="number" id="contact-stations" class="form-control" required min="100" placeholder="Minimum 100 stations" value="100">
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 1rem;">
+              <label for="contact-usecase">Briefly Describe Your Use Case / Target Region<span class="required">*</span></label>
+              <textarea id="contact-usecase" class="form-control" rows="4" required placeholder="Describe where you require base stations and if you are building RTK, VRS, or PPP engines..."></textarea>
+            </div>
+
+            <div style="margin-top: 2rem;">
+              <button type="submit" class="btn">
+                <i class="fa-solid fa-paper-plane"></i>
+                <span>Submit Data Stream Inquiry</span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="card">
+          <h2 class="section-title">
+            <i class="fa-solid fa-envelope" style="color: var(--accent-blue);"></i>
+            Direct Inquiry
+          </h2>
+          <p>
+            For urgent commercial inquiries, custom billing queries, or wholesale agreements, please email us directly:
+          </p>
+          <p style="margin-top: 0.75rem; font-family: var(--font-mono); font-size: 1.1rem; color: var(--accent-cyan);">
+            <i class="fa-solid fa-envelope" style="font-size: 0.9rem; margin-right: 0.5rem;"></i>support@geodnet.com
+          </p>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- KB Modal Dialog -->
+  <div class="modal" id="kb-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-title">Topic Title</h2>
+        <button class="modal-close" id="modal-close">&times;</button>
+      </div>
+      <div class="modal-body" id="modal-body">
+        <!-- Content injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
